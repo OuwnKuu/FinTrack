@@ -1,13 +1,13 @@
-package com.example.fintrack.ui.pemasukan
+package com.example.fintrack.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class PemasukanViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is pemasukan Fragment"
+        value = "This is login Fragment"
     }
     val text: LiveData<String> = _text
 }
