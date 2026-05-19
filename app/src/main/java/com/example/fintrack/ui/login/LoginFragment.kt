@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.fintrack.DatabaseHelper
 import com.example.fintrack.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
+    private lateinit var dbHelper: DatabaseHelper
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,11 +29,13 @@ class LoginFragment : Fragment() {
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        dbHelper = DatabaseHelper(requireContext())
 
         val textView: TextView = binding.textLogin
         loginViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
         return root
     }
 

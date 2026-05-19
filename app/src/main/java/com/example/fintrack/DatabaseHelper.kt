@@ -13,7 +13,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db?.execSQL("CREATE TABLE wallets (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "account_id INT," +
-                "tanggal DATE," +
+                "tanggal DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 "pemasukan INT," +
                 "pengeluaran INT," +
                 "saldo INT, " +
