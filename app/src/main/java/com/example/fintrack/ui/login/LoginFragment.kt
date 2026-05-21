@@ -30,11 +30,13 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
         dbHelper = DatabaseHelper(requireContext())
-
+        /*
         val textView: TextView = binding.textLogin
         loginViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+         */
 
         return root
     }

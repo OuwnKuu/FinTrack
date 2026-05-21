@@ -3,4 +3,7 @@
     <string name="title_login">Login</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_settings">Settings</string>
+    <string name="str_etVirtualAcc">Nama Akun</string>
+    <string name="str_etPassword">Masukkan Password</string>
+    <string name="str_btnMasuk">Masuk</string>
 </resources>

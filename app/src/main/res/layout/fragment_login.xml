@@ -6,17 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginFragment">
 
-    <TextView
-        android:id="@+id/text_login"
-        android:layout_width="match_parent"
+    <Spinner
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/spnAkun"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/etVirtualAcc"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="128dp"
+        android:minHeight="48dp"
+        android:minWidth="48dp"/>
+
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etVirtualAcc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:autofillHints="username"
+        android:inputType="text"
+        android:hint="@string/str_etVirtualAcc"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etVirtualAcc"
+        android:autofillHints="password"
+        android:inputType="textPassword"
+        android:hint="@string/str_etPassword"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnMasuk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
+        android:text="@string/str_btnMasuk"
+        android:textAllCaps="false"
+        android:layout_marginTop="24dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
