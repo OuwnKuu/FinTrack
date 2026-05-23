@@ -3,6 +3,7 @@ package com.example.fintrack
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.database.getStringOrNull
 
 class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -25,4 +26,21 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db?.execSQL("DROP TABLE IF EXISTS accounts")
         onCreate(db)
     }
+
+    fun loadData(): ArrayList<String> {
+        val listAkun = ArrayList<String>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT nama FROM accounts", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nama = cursor.getString(cursor.getColumnIndexOrThrow("nama"))
+                listAkun.add(nama)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return listAkun
+    }
+
 }
