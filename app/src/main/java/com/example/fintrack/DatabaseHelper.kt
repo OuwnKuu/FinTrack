@@ -3,7 +3,6 @@ package com.example.fintrack
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import androidx.core.database.getStringOrNull
 
 class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
