@@ -1,5 +1,6 @@
 package com.example.fintrack
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -8,7 +9,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE accounts (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "nama TEXT NOT NULL," +
+                "nama TEXT UNIQUE NOT NULL," +
                 "password TEXT NOT NULL)")
         db?.execSQL("CREATE TABLE wallets (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -40,6 +41,41 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         cursor.close()
         db.close()
         return listAkun
+    }
+
+    fun buatAkun(nama: String, password: String) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("nama", nama)
+            put("password", password)
+        }
+        db.insert("accounts", null, values)
+    }
+
+    fun getPasswordByAkun(namaAkun: String): String? {
+        val db = this.readableDatabase
+        var password: String? = null
+
+        val query = "SELECT password FROM accounts WHERE nama = ?"
+        val cursor = db.rawQuery(query, arrayOf(namaAkun))
+
+        if (cursor.moveToFirst()) {
+            password = cursor.getString(0)
+        }
+        cursor.close()
+        db.close()
+        return password
+    }
+
+    fun cekDuplikasiAkun(namaAkun: String): Boolean {
+        val db = this.readableDatabase
+        val query = "SELECT 1 FROM accounts WHERE nama = ?"
+        val cursor = db.rawQuery(query, arrayOf(namaAkun))
+        val isExist = cursor.count > 0
+
+        cursor.close()
+        db.close()
+        return isExist
     }
 
 }

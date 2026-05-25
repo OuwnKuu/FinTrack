@@ -6,4 +6,5 @@
     <string name="str_etVirtualAcc">Nama Akun</string>
     <string name="str_etPassword">Masukkan Password</string>
     <string name="str_btnMasuk">Masuk</string>
+    <string name="str_btnDaftar">Daftar</string>
 </resources>

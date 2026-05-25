@@ -9,13 +9,18 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.fintrack.DatabaseHelper
+import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private lateinit var dbHelper: DatabaseHelper
+
+    private lateinit var accounts: ArrayList<String>
+    private lateinit var adapter: ArrayAdapter<String>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,10 +45,10 @@ class LoginFragment : Fragment() {
 
          */
 
-        val accounts = dbHelper.loadData()
+        accounts = dbHelper.loadData()
         accounts.add(0, "-- Pilih Akun --")
         accounts.add(1, "Buat Akun Baru")
-        val adapter = ArrayAdapter(
+        adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             accounts)
@@ -54,21 +59,67 @@ class LoginFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (val selectedAccount = accounts[position]) {
                     "-- Pilih Akun --" -> {
-                        Toast.makeText(requireContext(), "Silahkan pilih opsinya ya", Toast.LENGTH_SHORT).show()
                         binding.etVirtualAcc.visibility = View.INVISIBLE
+                        binding.btnMasuk.visibility = View.INVISIBLE
+                        binding.btnDaftar.visibility = View.INVISIBLE
+                        binding.etVirtualAcc.text.clear()
+                        binding.etPassword.text.clear()
                     }
                     "Buat Akun Baru" -> {
                         binding.etVirtualAcc.visibility = View.VISIBLE
+                        binding.btnMasuk.visibility = View.INVISIBLE
+                        binding.btnDaftar.visibility = View.VISIBLE
+                        binding.etPassword.text.clear()
                     }
                     else -> {
                         Toast.makeText(requireContext(), "Akun: $selectedAccount", Toast.LENGTH_SHORT).show()
                         binding.etVirtualAcc.visibility = View.INVISIBLE
+                        binding.btnMasuk.visibility = View.VISIBLE
+                        binding.btnDaftar.visibility = View.INVISIBLE
+                        binding.etVirtualAcc.text.clear()
+                        binding.etPassword.text.clear()
                     }
+                }
+                binding.btnMasuk.setOnClickListener {
+                    val akunTerpilih = binding.spnAkun.selectedItem.toString()
+                    val inputPasswd = binding.etPassword.text.toString()
+                    if (akunTerpilih == "-- Pilih Akun --") {
+                        Toast.makeText(requireContext(), "Pilih akun dan isi password", Toast.LENGTH_SHORT).show()
+                    }
+                    val passwdAsli = dbHelper.getPasswordByAkun(akunTerpilih)
+                    if (inputPasswd == passwdAsli) {
+                        Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_navigation_login_to_navigation_dashboard)
+                        binding.etVirtualAcc.text.clear()
+                        binding.etPassword.text.clear()
+                    } else {
+                        Toast.makeText(requireContext(), "Password salah/tidak dimasukkan!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                binding.btnDaftar.setOnClickListener {
+                    val namaAkun = binding.etVirtualAcc.text.toString()
+                    val passwdAkun = binding.etPassword.text.toString()
+                    if (!dbHelper.cekDuplikasiAkun(namaAkun)) {
+                        dbHelper.buatAkun(namaAkun, passwdAkun)
+                        refreshSpinner()
+                        Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Akun sudah ada", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(requireContext(), "Pilih akun terlebih dahulu", Toast.LENGTH_SHORT).show()
+            }
+            fun refreshSpinner() {
+                val dataTerbaru = dbHelper.loadData()
+                accounts.clear()
+                accounts.add(0, "-- Pilih Akun --")
+                accounts.add(1, "Buat Akun Baru")
+                accounts.addAll(dataTerbaru)
+                adapter.notifyDataSetChanged()
             }
         }
 
