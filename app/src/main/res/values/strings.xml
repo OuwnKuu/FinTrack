@@ -7,4 +7,6 @@
     <string name="str_etPassword">Masukkan Password</string>
     <string name="str_btnMasuk">Masuk</string>
     <string name="str_btnDaftar">Daftar</string>
+    <string name="str_btnLogOut">Log Out</string>
+    <string name="str_etSyaratDaftar">Nama akun minimal: 1 karakter (jangan whitespace)\nPassword minimal: 3 karakter</string>
 </resources>

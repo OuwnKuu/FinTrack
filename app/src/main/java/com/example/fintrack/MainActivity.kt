@@ -1,6 +1,7 @@
 package com.example.fintrack
 
 import android.os.Bundle
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var dbHelper: DatabaseHelper
+    var isUserLoggedIn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,5 +41,24 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         dbHelper = DatabaseHelper(this)
+
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_login -> {
+                    if (isUserLoggedIn) {
+                        Toast.makeText(this, "Tekan tombol logout terlebih dahulu", Toast.LENGTH_SHORT).show()
+                        return@setOnItemSelectedListener false
+                    } else {
+                        navController.navigate(R.id.navigation_login)
+                        return@setOnItemSelectedListener true
+                    }
+                }
+                R.id.navigation_dashboard -> {
+                    navController.navigate(R.id.navigation_dashboard)
+                    return@setOnItemSelectedListener true
+                }
+                else -> false
+            }
+        }
     }
 }

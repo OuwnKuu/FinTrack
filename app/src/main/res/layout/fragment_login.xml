@@ -68,4 +68,13 @@
         android:textAllCaps="false"
         android:layout_marginTop="24dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSyaratDaftar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnDaftar"
+        android:text="@string/str_etSyaratDaftar"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

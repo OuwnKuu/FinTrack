@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.fintrack.MainActivity
+import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -22,16 +25,25 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        //val dashboardViewModel =
+            ViewModelProvider(this)[DashboardViewModel::class.java]
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        /*
         val textView: TextView = binding.textDashboard
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+         */
+
+        binding.btnLogOut.setOnClickListener {
+            (activity as MainActivity).isUserLoggedIn = false
+            findNavController().navigate(R.id.navigation_login)
+            Toast.makeText(requireContext(), "Berhasil Log Out", Toast.LENGTH_SHORT).show()
+        }
+
         return root
     }
 

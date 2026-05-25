@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fintrack.DatabaseHelper
+import com.example.fintrack.MainActivity
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentLoginBinding
 
@@ -60,22 +61,28 @@ class LoginFragment : Fragment() {
                 when (val selectedAccount = accounts[position]) {
                     "-- Pilih Akun --" -> {
                         binding.etVirtualAcc.visibility = View.INVISIBLE
+                        binding.etPassword.visibility = View.INVISIBLE
                         binding.btnMasuk.visibility = View.INVISIBLE
                         binding.btnDaftar.visibility = View.INVISIBLE
+                        binding.tvSyaratDaftar.visibility = View.INVISIBLE
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
                     }
                     "Buat Akun Baru" -> {
                         binding.etVirtualAcc.visibility = View.VISIBLE
+                        binding.etPassword.visibility = View.VISIBLE
                         binding.btnMasuk.visibility = View.INVISIBLE
                         binding.btnDaftar.visibility = View.VISIBLE
+                        binding.tvSyaratDaftar.visibility = View.VISIBLE
                         binding.etPassword.text.clear()
                     }
                     else -> {
                         Toast.makeText(requireContext(), "Akun: $selectedAccount", Toast.LENGTH_SHORT).show()
                         binding.etVirtualAcc.visibility = View.INVISIBLE
+                        binding.etPassword.visibility = View.VISIBLE
                         binding.btnMasuk.visibility = View.VISIBLE
                         binding.btnDaftar.visibility = View.INVISIBLE
+                        binding.tvSyaratDaftar.visibility = View.INVISIBLE
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
                     }
@@ -89,7 +96,8 @@ class LoginFragment : Fragment() {
                     val passwdAsli = dbHelper.getPasswordByAkun(akunTerpilih)
                     if (inputPasswd == passwdAsli) {
                         Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_navigation_login_to_navigation_dashboard)
+                        (activity as MainActivity).isUserLoggedIn = true
+                        findNavController().navigate(R.id.navigation_dashboard)
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
                     } else {
@@ -99,14 +107,13 @@ class LoginFragment : Fragment() {
                 binding.btnDaftar.setOnClickListener {
                     val namaAkun = binding.etVirtualAcc.text.toString()
                     val passwdAkun = binding.etPassword.text.toString()
-                    if (!dbHelper.cekDuplikasiAkun(namaAkun)) {
+                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length >= 3) {
                         dbHelper.buatAkun(namaAkun, passwdAkun)
                         refreshSpinner()
                         Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(requireContext(), "Akun sudah ada", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Akun sudah ada/tidak memenuhi syarat", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
 
