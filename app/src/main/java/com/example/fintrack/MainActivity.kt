@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.navigation_dashboard)
                     return@setOnItemSelectedListener true
                 }
+                R.id.navigation_settings -> {
+                    navController.navigate(R.id.navigation_settings)
+                    return@setOnItemSelectedListener true
+                }
                 else -> false
             }
         }
