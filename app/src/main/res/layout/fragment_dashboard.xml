@@ -10,9 +10,114 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnLogOut"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="@string/str_btnLogOut"
-        android:layout_marginBottom="96dp"/>
+        android:textAllCaps="false"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnOpsiData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="64dp"
+        android:minHeight="48dp"
+        android:minWidth="48dp"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnOpsiInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiData"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="16dp"
+        android:minHeight="48dp"
+        android:minWidth="48dp"/>
+
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etPemasukan"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:layout_marginTop="64dp"
+        android:inputType="number"
+        android:hint="@string/str_etPemasukan"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etPengeluaran"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:layout_marginTop="64dp"
+        android:inputType="number"
+        android:hint="@string/str_etPengeluaran"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etId"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:layout_marginTop="108dp"
+        android:inputType="number"
+        android:hint="@string/str_etId"
+        android:textSize="20sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:text="@string/str_btnEdit"
+        android:textAllCaps="false"
+        android:layout_marginTop="160dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnHapus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:text="@string/str_btnHapus"
+        android:textAllCaps="false"
+        android:layout_marginTop="160dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCatat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnOpsiInput"
+        android:text="@string/str_btnCatat"
+        android:textAllCaps="false"
+        android:layout_marginTop="160dp"/>
+
+    <ListView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/lvKeuangan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnCatat"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
