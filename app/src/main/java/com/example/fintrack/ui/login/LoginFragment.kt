@@ -67,6 +67,7 @@ class LoginFragment : Fragment() {
                         binding.tvSyaratDaftar.visibility = View.INVISIBLE
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
+                        Toast.makeText(requireContext(), "Pilih akun dan isi password", Toast.LENGTH_SHORT).show()
                     }
                     "Buat Akun Baru" -> {
                         binding.etVirtualAcc.visibility = View.VISIBLE
@@ -90,9 +91,6 @@ class LoginFragment : Fragment() {
                 binding.btnMasuk.setOnClickListener {
                     val akunTerpilih = binding.spnAkun.selectedItem.toString()
                     val inputPasswd = binding.etPassword.text.toString()
-                    if (akunTerpilih == "-- Pilih Akun --") {
-                        Toast.makeText(requireContext(), "Pilih akun dan isi password", Toast.LENGTH_SHORT).show()
-                    }
                     val passwdAsli = dbHelper.getPasswordByAkun(akunTerpilih)
                     if (inputPasswd == passwdAsli) {
                         Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
