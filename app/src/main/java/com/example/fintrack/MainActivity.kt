@@ -54,12 +54,23 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.navigation_dashboard -> {
-                    navController.navigate(R.id.navigation_dashboard)
-                    return@setOnItemSelectedListener true
+                    if (isUserLoggedIn) {
+                        navController.navigate(R.id.navigation_dashboard)
+                        return@setOnItemSelectedListener true
+                    } else {
+                        Toast.makeText(this, "Mohon untuk login terlebih dahulu", Toast.LENGTH_SHORT).show()
+                        return@setOnItemSelectedListener false
+                    }
+
                 }
                 R.id.navigation_settings -> {
-                    navController.navigate(R.id.navigation_settings)
-                    return@setOnItemSelectedListener true
+                    if (isUserLoggedIn) {
+                        navController.navigate(R.id.navigation_settings)
+                        return@setOnItemSelectedListener true
+                    } else {
+                        Toast.makeText(this, "Mohon untuk login terlebih dahulu", Toast.LENGTH_SHORT).show()
+                        return@setOnItemSelectedListener false
+                    }
                 }
                 else -> false
             }
