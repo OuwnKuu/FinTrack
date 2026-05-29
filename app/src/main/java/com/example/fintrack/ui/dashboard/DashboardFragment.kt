@@ -82,24 +82,28 @@ class DashboardFragment : Fragment() {
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
                         binding.etId.visibility = View.INVISIBLE
+                        binding.etId.text.clear()
                     }
                     "Catat" -> {
                         binding.btnCatat.visibility = View.VISIBLE
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
                         binding.etId.visibility = View.INVISIBLE
+                        binding.etId.text.clear()
                     }
                     "Edit" -> {
                         binding.btnCatat.visibility = View.INVISIBLE
                         binding.btnEdit.visibility = View.VISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
                         binding.etId.visibility = View.VISIBLE
+                        binding.etId.text.clear()
                     }
                     "Hapus" -> {
                         binding.btnCatat.visibility = View.INVISIBLE
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.VISIBLE
                         binding.etId.visibility = View.VISIBLE
+                        binding.etId.text.clear()
                     }
                 }
             }
@@ -113,14 +117,18 @@ class DashboardFragment : Fragment() {
                     "-- Pilih Opsi Input Data --" -> {
                         binding.etPemasukan.visibility = View.INVISIBLE
                         binding.etPengeluaran.visibility = View.INVISIBLE
+                        binding.etPemasukan.text.clear()
+                        binding.etPengeluaran.text.clear()
                     }
                     "Pemasukan" -> {
                         binding.etPemasukan.visibility = View.VISIBLE
                         binding.etPengeluaran.visibility = View.INVISIBLE
+                        binding.etPengeluaran.text.clear()
                     }
                     "Pengeluaran" -> {
                         binding.etPemasukan.visibility = View.INVISIBLE
                         binding.etPengeluaran.visibility = View.VISIBLE
+                        binding.etPemasukan.text.clear()
                     }
                 }
             }
@@ -140,5 +148,16 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dbHelper = DatabaseHelper(requireContext())
+
+        val accountIdAktif = (activity as MainActivity).currentAccountId
+        val dataKeuanganAccount = dbHelper.loadDataKeuangan(accountIdAktif)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_2, dataKeuanganAccount)
+        binding.lvKeuangan.adapter = adapter
     }
 }

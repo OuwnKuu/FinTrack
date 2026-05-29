@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
 
          */
 
-        accounts = dbHelper.loadData()
+        accounts = dbHelper.loadDataAkun()
         accounts.add(0, "-- Pilih Akun --")
         accounts.add(1, "Buat Akun Baru")
         adapter = ArrayAdapter(
@@ -94,7 +94,9 @@ class LoginFragment : Fragment() {
                     val passwdAsli = dbHelper.getPasswordByAkun(akunTerpilih)
                     if (inputPasswd == passwdAsli) {
                         Toast.makeText(requireContext(), "Login berhasil!", Toast.LENGTH_SHORT).show()
+                        val accountId = dbHelper.getAccountIdByUsername(akunTerpilih)
                         (activity as MainActivity).isUserLoggedIn = true
+                        (activity as MainActivity).currentAccountId = accountId
                         findNavController().navigate(R.id.navigation_dashboard)
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
@@ -119,7 +121,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Pilih akun terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
             fun refreshSpinner() {
-                val dataTerbaru = dbHelper.loadData()
+                val dataTerbaru = dbHelper.loadDataAkun()
                 accounts.clear()
                 accounts.add(0, "-- Pilih Akun --")
                 accounts.add(1, "Buat Akun Baru")

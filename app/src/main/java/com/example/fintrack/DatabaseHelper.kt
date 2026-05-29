@@ -18,16 +18,19 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
                 "pemasukan INT," +
                 "pengeluaran INT," +
                 "saldo INT, " +
-                "FOREIGN KEY(account_id) REFERENCES accounts(id))")
+                "FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+        /*
         db?.execSQL("DROP TABLE IF EXISTS wallets")
         db?.execSQL("DROP TABLE IF EXISTS accounts")
         onCreate(db)
+
+         */
     }
 
-    fun loadData(): ArrayList<String> {
+    fun loadDataAkun(): ArrayList<String> {
         val listAkun = ArrayList<String>()
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT nama FROM accounts", null)
@@ -67,6 +70,44 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return password
     }
 
+    fun getAccountIdByUsername(username: String): Int {
+        val db = this.readableDatabase
+        var userId = -1
+        val cursor = db.rawQuery("SELECT id FROM accounts WHERE nama = ?", arrayOf(username))
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return userId
+    }
+
+    fun loadDataKeuangan(accountId: Int): ArrayList<String> {
+        val listData = ArrayList<String>()
+        val db = this.readableDatabase
+
+        val query = "SELECT id, tanggal, pemasukan, pengeluaran, saldo FROM wallets WHERE account_id = ?"
+        val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(0)
+                val tanggal = cursor.getString(1)
+                val pemasukan = cursor.getInt(2)
+                val pengeluaran = cursor.getInt(3)
+                val saldo = cursor.getInt(4)
+                listData.add("ID: $id\n" +
+                        "Tanggal: $tanggal\n" +
+                        "Pemasukan: $pemasukan\n" +
+                        "Pengeluaran: $pengeluaran\n" +
+                        "Saldo: $saldo")
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return listData
+    }
+
     fun cekDuplikasiAkun(namaAkun: String): Boolean {
         val db = this.readableDatabase
         val query = "SELECT 1 FROM accounts WHERE nama = ?"
@@ -77,5 +118,4 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db.close()
         return isExist
     }
-
 }
