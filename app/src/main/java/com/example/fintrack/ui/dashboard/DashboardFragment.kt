@@ -178,6 +178,47 @@ class DashboardFragment : Fragment() {
                 Toast.makeText(requireContext(), "Gagal menyimpan catatan", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.btnEdit.setOnClickListener {
+            val idTarget = binding.etId.text.toString()
+            val currentAccountId = (activity as MainActivity).currentAccountId
+            val formatTanggal = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+            val tanggalSekarang = formatTanggal.format(Date())
+            var nominalPemasukan = 0
+            var nominalPengeluaran = 0
+            val jenisTransaksi = binding.spnOpsiInput.selectedItem.toString()
+
+            if (idTarget.isEmpty()) {
+                Toast.makeText(requireContext(), "Masukkan ID terlebih dahulu!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (jenisTransaksi.equals("Pemasukan", ignoreCase = true)) {
+                val input = binding.etPemasukan.text.toString()
+                nominalPemasukan = if (input.isNotEmpty()) input.toInt() else 0
+            } else {
+                val input = binding.etPengeluaran.text.toString()
+                nominalPengeluaran = if (input.isNotEmpty()) input.toInt() else 0
+            }
+
+            if (nominalPemasukan == 0 && nominalPengeluaran == 0) {
+                Toast.makeText(requireContext(), "Masukkan nominal terlebih dahulu!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val sukses = dbHelper.editKeuangan(idTarget.toInt(), currentAccountId, tanggalSekarang, nominalPemasukan, nominalPengeluaran)
+
+            if (sukses) {
+                binding.etPemasukan.text.clear()
+                binding.etPengeluaran.text.clear()
+                binding.etId.text.clear()
+                refreshListKeuangan(currentAccountId)
+                Toast.makeText(requireContext(), "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Data gagal diperbarui", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         return root
     }
 

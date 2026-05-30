@@ -146,4 +146,40 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return db.insert("wallets", null, values) != -1L
     }
 
+    fun editKeuangan(id: Int, accountId: Int, tanggal: String, pemasukan: Int, pengeluaran: Int): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("tanggal", tanggal)
+            put("pemasukan", pemasukan)
+            put("pengeluaran", pengeluaran)
+        }
+        val updateResult = db.update("wallets", values, "id=? AND account_id=?", arrayOf(id.toString(), accountId.toString()))
+
+        if (updateResult > 0) {
+            val query = "SELECT id, pemasukan, pengeluaran FROM wallets WHERE account_id = ? ORDER BY id ASC"
+            val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
+            var runningSaldo = 0
+
+            if (cursor.moveToFirst()) {
+                do {
+                    val rowId = cursor.getInt(0)
+                    val pemasukan = cursor.getInt(1)
+                    val pengeluaran = cursor.getInt(2)
+
+                    runningSaldo = runningSaldo + pemasukan - pengeluaran
+
+                    val valuesSaldo = ContentValues().apply {
+                        put("saldo", runningSaldo)
+                    }
+                    db.update("wallets", valuesSaldo, "id=?", arrayOf(rowId.toString()))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+            db.close()
+            return true
+        }
+        db.close()
+        return false
+    }
+
 }
