@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -84,29 +85,49 @@ class DashboardFragment : Fragment() {
                         binding.btnCatat.visibility = View.INVISIBLE
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
+                        binding.etPemasukan.visibility = View.INVISIBLE
+                        binding.etPengeluaran.visibility = View.INVISIBLE
+                        binding.spnOpsiInput.visibility = View.INVISIBLE
                         binding.etId.visibility = View.INVISIBLE
                         binding.etId.text.clear()
+                        binding.etPemasukan.text.clear()
+                        binding.etPengeluaran.text.clear()
+                        binding.spnOpsiInput.setSelection(0)
                     }
                     "Catat" -> {
                         binding.btnCatat.visibility = View.VISIBLE
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
+                        binding.spnOpsiInput.visibility = View.VISIBLE
                         binding.etId.visibility = View.INVISIBLE
                         binding.etId.text.clear()
+                        binding.etPemasukan.text.clear()
+                        binding.etPengeluaran.text.clear()
+                        binding.spnOpsiInput.setSelection(0)
                     }
                     "Edit" -> {
                         binding.btnCatat.visibility = View.INVISIBLE
                         binding.btnEdit.visibility = View.VISIBLE
                         binding.btnHapus.visibility = View.INVISIBLE
+                        binding.spnOpsiInput.visibility = View.VISIBLE
                         binding.etId.visibility = View.VISIBLE
                         binding.etId.text.clear()
+                        binding.etPemasukan.text.clear()
+                        binding.etPengeluaran.text.clear()
+                        binding.spnOpsiInput.setSelection(0)
                     }
                     "Hapus" -> {
                         binding.btnCatat.visibility = View.INVISIBLE
                         binding.btnEdit.visibility = View.INVISIBLE
                         binding.btnHapus.visibility = View.VISIBLE
                         binding.etId.visibility = View.VISIBLE
+                        binding.etPemasukan.visibility = View.INVISIBLE
+                        binding.etPengeluaran.visibility = View.INVISIBLE
+                        binding.spnOpsiInput.visibility = View.INVISIBLE
                         binding.etId.text.clear()
+                        binding.etPemasukan.text.clear()
+                        binding.etPengeluaran.text.clear()
+                        binding.spnOpsiInput.setSelection(0)
                     }
                 }
             }
@@ -211,6 +232,26 @@ class DashboardFragment : Fragment() {
             if (sukses) {
                 binding.etPemasukan.text.clear()
                 binding.etPengeluaran.text.clear()
+                binding.etId.text.clear()
+                refreshListKeuangan(currentAccountId)
+                Toast.makeText(requireContext(), "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Data gagal diperbarui", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnHapus.setOnClickListener {
+            val idTarget = binding.etId.text.toString()
+            val currentAccountId = (activity as MainActivity).currentAccountId
+
+            if (idTarget.isEmpty()) {
+                Toast.makeText(requireContext(), "Masukkan ID terlebih dahulu!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val sukses = dbHelper.hapusKeuangan(idTarget.toInt(), currentAccountId)
+
+            if (sukses) {
                 binding.etId.text.clear()
                 refreshListKeuangan(currentAccountId)
                 Toast.makeText(requireContext(), "Data berhasil diperbarui", Toast.LENGTH_SHORT).show()

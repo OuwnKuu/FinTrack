@@ -182,4 +182,35 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return false
     }
 
+    fun hapusKeuangan(id: Int, accountId: Int): Boolean {
+        val db = this.writableDatabase
+        val deleteResult = db.delete("wallets","ID=? AND account_id=?", arrayOf(id.toString(), accountId.toString()))
+
+        if (deleteResult > 0) {
+            val query = "SELECT id, pemasukan, pengeluaran FROM wallets WHERE account_id = ? ORDER BY id ASC"
+            val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
+            var runningSaldo = 0
+
+            if (cursor.moveToFirst()) {
+                do {
+                    val rowId = cursor.getInt(0)
+                    val pemasukan = cursor.getInt(1)
+                    val pengeluaran = cursor.getInt(2)
+
+                    runningSaldo = runningSaldo + pemasukan - pengeluaran
+
+                    val valuesSaldo = ContentValues().apply {
+                        put("saldo", runningSaldo)
+                    }
+                    db.update("wallets", valuesSaldo, "id=?", arrayOf(rowId.toString()))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+            db.close()
+            return true
+        }
+        db.close()
+        return false
+    }
+
 }
