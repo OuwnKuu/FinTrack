@@ -86,7 +86,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         val listData = ArrayList<String>()
         val db = this.readableDatabase
 
-        val query = "SELECT id, tanggal, pemasukan, pengeluaran, saldo FROM wallets WHERE account_id = ?"
+        val query = "SELECT id, tanggal, pemasukan, pengeluaran, saldo FROM wallets WHERE account_id = ? ORDER BY id DESC"
         val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
 
         if (cursor.moveToFirst()) {
@@ -98,9 +98,9 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
                 val saldo = cursor.getInt(4)
                 listData.add("ID: $id\n" +
                         "Tanggal: $tanggal\n" +
-                        "Pemasukan: $pemasukan\n" +
-                        "Pengeluaran: $pengeluaran\n" +
-                        "Saldo: $saldo")
+                        "Pemasukan: Rp$pemasukan\n" +
+                        "Pengeluaran: Rp$pengeluaran\n" +
+                        "Saldo: Rp$saldo")
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -118,4 +118,32 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db.close()
         return isExist
     }
+
+    fun getLatestSaldo(accountId: Int): Int {
+        val db = this.readableDatabase
+        var latestSaldo = 0
+
+        val query = "SELECT saldo FROM wallets WHERE account_id = ? ORDER BY id DESC LIMIT 1"
+        val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
+
+        if (cursor.moveToFirst()) {
+            latestSaldo = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return latestSaldo
+    }
+
+    fun catatKeuangan(accountId: Int, tanggal: String, pemasukan: Int, pengeluaran: Int, saldo: Int): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("account_id", accountId)
+            put("tanggal", tanggal)
+            put("pemasukan", pemasukan)
+            put("pengeluaran", pengeluaran)
+            put("saldo", saldo)
+        }
+        return db.insert("wallets", null, values) != -1L
+    }
+
 }
