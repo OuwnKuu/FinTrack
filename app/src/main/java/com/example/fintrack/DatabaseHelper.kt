@@ -146,10 +146,9 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return db.insert("wallets", null, values) != -1L
     }
 
-    fun editKeuangan(id: Int, accountId: Int, tanggal: String, pemasukan: Int, pengeluaran: Int): Boolean {
+    fun editKeuangan(id: Int, accountId: Int, pemasukan: Int, pengeluaran: Int): Boolean {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put("tanggal", tanggal)
             put("pemasukan", pemasukan)
             put("pengeluaran", pengeluaran)
         }

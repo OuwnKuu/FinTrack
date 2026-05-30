@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -203,8 +202,6 @@ class DashboardFragment : Fragment() {
         binding.btnEdit.setOnClickListener {
             val idTarget = binding.etId.text.toString()
             val currentAccountId = (activity as MainActivity).currentAccountId
-            val formatTanggal = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-            val tanggalSekarang = formatTanggal.format(Date())
             var nominalPemasukan = 0
             var nominalPengeluaran = 0
             val jenisTransaksi = binding.spnOpsiInput.selectedItem.toString()
@@ -227,7 +224,12 @@ class DashboardFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val sukses = dbHelper.editKeuangan(idTarget.toInt(), currentAccountId, tanggalSekarang, nominalPemasukan, nominalPengeluaran)
+            val sukses = dbHelper.editKeuangan(
+                idTarget.toInt(),
+                currentAccountId,
+                nominalPemasukan,
+                nominalPengeluaran
+            )
 
             if (sukses) {
                 binding.etPemasukan.text.clear()
