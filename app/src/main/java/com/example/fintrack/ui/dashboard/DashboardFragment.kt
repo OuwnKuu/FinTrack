@@ -161,6 +161,7 @@ class DashboardFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             (activity as MainActivity).isUserLoggedIn = false
+            (activity as MainActivity).currentAccountId = -1
             findNavController().navigate(R.id.navigation_login)
             Toast.makeText(requireContext(), "Berhasil Log Out", Toast.LENGTH_SHORT).show()
         }

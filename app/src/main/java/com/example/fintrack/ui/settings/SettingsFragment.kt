@@ -1,5 +1,6 @@
 package com.example.fintrack.ui.settings
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -77,8 +78,31 @@ class SettingsFragment : Fragment() {
 
         binding.btnLogOut.setOnClickListener {
             (activity as MainActivity).isUserLoggedIn = false
+            (activity as MainActivity).currentAccountId = -1
             findNavController().navigate(R.id.navigation_login)
             Toast.makeText(requireContext(), "Berhasil Log Out", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnHapusAkun.setOnClickListener {
+            val id = (activity as MainActivity).currentAccountId
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Hapus Akun")
+            builder.setMessage("Apakah anda yakin? Ini akan menghapus SEMUA data yang ada di akun ini")
+
+            builder.setPositiveButton("Hapus sekarang") { _, _ ->
+                dbHelper.hapusAkun(id)
+                (activity as MainActivity).isUserLoggedIn = false
+                (activity as MainActivity).currentAccountId = -1
+                Toast.makeText(requireContext(), "Akun berhasil terhapus", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.navigation_login)
+            }
+
+            builder.setNegativeButton("Batal") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
         }
 
         return root

@@ -234,4 +234,11 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db.close()
         return bundle
     }
+
+    fun hapusAkun(id: Int) {
+        val db = this.writableDatabase
+        db.delete("accounts", "id=?", arrayOf(id.toString()))
+        db.delete("wallets", "account_id=?", arrayOf(id.toString()))
+        db.close()
+    }
 }
