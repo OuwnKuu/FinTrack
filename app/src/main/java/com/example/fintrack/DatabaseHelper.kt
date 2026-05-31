@@ -235,6 +235,17 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return bundle
     }
 
+    fun editAkun(id: Int, namaBaru: String, passwdbaru: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues(). apply {
+            put("nama", namaBaru)
+            put("password", passwdbaru)
+        }
+        val result = db.update("accounts", values, "id=?", arrayOf(id.toString()))
+        db.close()
+        return result > 0
+    }
+
     fun hapusAkun(id: Int) {
         val db = this.writableDatabase
         db.delete("accounts", "id=?", arrayOf(id.toString()))

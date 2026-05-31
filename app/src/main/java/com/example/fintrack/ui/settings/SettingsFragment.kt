@@ -49,6 +49,10 @@ class SettingsFragment : Fragment() {
 
          */
 
+        dbHelper = DatabaseHelper(requireContext())
+        val currentAccountId = (activity as MainActivity).currentAccountId
+        refreshListInformasiAkun(currentAccountId)
+
         val listener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             when (buttonView.id) {
                 binding.cbGantiNamaAkun.id -> if (isChecked) {
@@ -105,20 +109,73 @@ class SettingsFragment : Fragment() {
             dialog.show()
         }
 
+        binding.btnGanti.setOnClickListener {
+            val currentAccountId = (activity as MainActivity).currentAccountId
+            val infoAkun = dbHelper.loadDataAkun(currentAccountId)
+            val namaAkunLama = infoAkun?.getString("namaAkun").toString()
+            val passwdAkunLama = infoAkun?.getString("password").toString()
+            val isNamaChecked = binding.cbGantiNamaAkun.isChecked
+            val isPasswdChecked = binding.cbGantiPasswd.isChecked
+
+            if (!isNamaChecked && !isPasswdChecked) {
+                Toast.makeText(requireContext(), "Centang bagian yang ingin diganti terlebih dahulu", Toast.LENGTH_LONG).show()
+            }
+
+            var namaAkunFinal = namaAkunLama
+            var passwdAkunFinal = passwdAkunLama
+
+            var namaBerubah = false
+            var passwdBerubah = false
+
+            if (isNamaChecked) {
+                val namaBaru = binding.etGantiNamaAkun.text.toString()
+
+                if (dbHelper.cekDuplikasiAkun(namaBaru) && namaBaru.isBlank()) {
+                    binding.etGantiNamaAkun.error = "Nama akun tidak boleh kosong, duplikat, atau hanya spasi"
+                    return@setOnClickListener
+                }
+                namaAkunFinal = namaBaru
+                namaBerubah = true
+            }
+
+            if (isPasswdChecked) {
+                val passwdBaru = binding.etGantiPasswd.text.toString().trim()
+
+                if(passwdBaru.length < 3) {
+                    binding.etGantiPasswd.error = "Password minimal 3 karakter (tidak termasuk spasi)"
+                    return@setOnClickListener
+                }
+                passwdAkunFinal = passwdBaru
+                passwdBerubah = true
+            }
+
+            val sukses = dbHelper.editAkun(currentAccountId, namaAkunFinal, passwdAkunFinal)
+
+            if (sukses) {
+                val pesanToast = when {
+                    namaBerubah && passwdBerubah -> "Nama akun dan password berhasil diubah"
+                    namaBerubah -> "Nama akun berhasil diubah"
+                    passwdBerubah -> "Password akun berhasil diubah"
+                    else -> "Tidak ada perubahan"
+                }
+                Toast.makeText(requireContext(), pesanToast, Toast.LENGTH_SHORT).show()
+
+                binding.cbGantiNamaAkun.isChecked = false
+                binding.cbGantiPasswd.isChecked = false
+                binding.etGantiNamaAkun.text.clear()
+                binding.etGantiPasswd.text.clear()
+
+                refreshListInformasiAkun(currentAccountId)
+            } else {
+                Toast.makeText(requireContext(), "Pembaruan gagal", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        dbHelper = DatabaseHelper(requireContext())
-        val accountIdAktif = (activity as MainActivity).currentAccountId
-        val dataAccount = dbHelper.loadDataAkun(accountIdAktif)
+    private fun refreshListInformasiAkun(accountId: Int) {
+        val dataAccount = dbHelper.loadDataAkun(accountId)
 
         if (dataAccount != null) {
             val id = dataAccount.getInt("id")
@@ -142,5 +199,10 @@ class SettingsFragment : Fragment() {
 
             binding.lvInformasiUmum.adapter = adapter
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
