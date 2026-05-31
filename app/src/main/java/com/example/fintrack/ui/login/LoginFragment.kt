@@ -67,7 +67,6 @@ class LoginFragment : Fragment() {
                         binding.tvSyaratDaftar.visibility = View.INVISIBLE
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
-                        Toast.makeText(requireContext(), "Pilih akun dan isi password", Toast.LENGTH_SHORT).show()
                     }
                     "Buat Akun Baru" -> {
                         binding.etVirtualAcc.visibility = View.VISIBLE
@@ -78,7 +77,6 @@ class LoginFragment : Fragment() {
                         binding.etPassword.text.clear()
                     }
                     else -> {
-                        Toast.makeText(requireContext(), "Akun: $selectedAccount", Toast.LENGTH_SHORT).show()
                         binding.etVirtualAcc.visibility = View.INVISIBLE
                         binding.etPassword.visibility = View.VISIBLE
                         binding.btnMasuk.visibility = View.VISIBLE
