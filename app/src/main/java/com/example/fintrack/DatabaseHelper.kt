@@ -10,7 +10,8 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         db?.execSQL("CREATE TABLE accounts (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nama TEXT UNIQUE NOT NULL," +
-                "password TEXT NOT NULL)")
+                "password TEXT NOT NULL," +
+                "tanggal_pembuatan DATETIME DEFAULT CURRENT_TIMESTAMP)")
         db?.execSQL("CREATE TABLE wallets (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "account_id INT," +
