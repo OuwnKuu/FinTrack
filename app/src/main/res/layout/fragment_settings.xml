@@ -9,9 +9,100 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvAccountId"
+        android:id="@+id/tvInformasiUmum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/str_informasiUmum"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <ListView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/lvInformasiUmum"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/tvInformasiUmum"
+        app:layout_constraintBottom_toTopOf="@id/tvEditInformasiUmum"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvEditInformasiUmum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/str_editInformasiUmum"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbGantiNamaAkun"
+        app:layout_constraintTop_toBottomOf="@id/tvEditInformasiUmum"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/str_cbGantiNamaAkun"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbGantiPasswd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cbGantiNamaAkun"
+        android:text="@string/str_cbGantiPasswd"/>
+
+    <EditText
+        android:layout_width="216dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etGantiNamaAkun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEditInformasiUmum"
+        android:autofillHints="username"
+        android:inputType="text"
+        android:hint="@string/str_etGantiNamaAkun"/>
+
+    <EditText
+        android:layout_width="216dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/etGantiPasswd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etGantiNamaAkun"
+        android:autofillHints="username"
+        android:inputType="text"
+        android:hint="@string/str_etGantiPasswd"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnGanti"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cbGantiPasswd"
+        android:layout_marginTop="16dp"
+        android:text="@string/str_btnGanti"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnHapusAkun"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="64dp"
+        android:text="@string/str_btnHapusAkun"
+        android:backgroundTint="#E20000"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="64dp"
+        android:text="@string/str_btnLogOut"
+        android:textAllCaps="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

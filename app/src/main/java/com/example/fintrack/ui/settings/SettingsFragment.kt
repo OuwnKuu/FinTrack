@@ -37,9 +37,11 @@ class SettingsFragment : Fragment() {
         }
 
          */
-
+        /*
         val currentAccountId = (activity as MainActivity).currentAccountId.toString()
         binding.tvAccountId.text = (currentAccountId)
+
+         */
 
         return root
     }

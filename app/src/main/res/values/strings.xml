@@ -15,4 +15,12 @@
     <string name="str_btnCatat">Catat</string>
     <string name="str_btnEdit">Edit</string>
     <string name="str_btnHapus">Hapus</string>
+    <string name="str_informasiUmum">Informasi Umum</string>
+    <string name="str_editInformasiUmum">Edit Informasi Umum</string>
+    <string name="str_cbGantiNamaAkun">Ganti Nama Akun</string>
+    <string name="str_cbGantiPasswd">Ganti Password</string>
+    <string name="str_etGantiNamaAkun">Nama Akun Baru</string>
+    <string name="str_etGantiPasswd">Password Akun Baru</string>
+    <string name="str_btnGanti">Ganti</string>
+    <string name="str_btnHapusAkun">HAPUS AKUN</string>
 </resources>
