@@ -62,7 +62,8 @@
         app:layout_constraintTop_toBottomOf="@id/tvEditInformasiUmum"
         android:autofillHints="username"
         android:inputType="text"
-        android:hint="@string/str_etGantiNamaAkun"/>
+        android:hint="@string/str_etGantiNamaAkun"
+        android:visibility="invisible"/>
 
     <EditText
         android:layout_width="216dp"
@@ -72,7 +73,8 @@
         app:layout_constraintTop_toBottomOf="@id/etGantiNamaAkun"
         android:autofillHints="username"
         android:inputType="text"
-        android:hint="@string/str_etGantiPasswd"/>
+        android:hint="@string/str_etGantiPasswd"
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="wrap_content"
