@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.fintrack.DatabaseHelper
 import com.example.fintrack.MainActivity
+import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -42,6 +45,12 @@ class SettingsFragment : Fragment() {
         binding.tvAccountId.text = (currentAccountId)
 
          */
+
+        binding.btnLogOut.setOnClickListener {
+            (activity as MainActivity).isUserLoggedIn = false
+            findNavController().navigate(R.id.navigation_login)
+            Toast.makeText(requireContext(), "Berhasil Log Out", Toast.LENGTH_SHORT).show()
+        }
 
         return root
     }
