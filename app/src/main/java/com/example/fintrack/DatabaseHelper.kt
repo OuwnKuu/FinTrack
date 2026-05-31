@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Bundle
 
 class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -31,7 +32,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
          */
     }
 
-    fun loadDataAkun(): ArrayList<String> {
+    fun loadDaftarAkun(): ArrayList<String> {
         val listAkun = ArrayList<String>()
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT nama FROM accounts", null)
@@ -47,11 +48,12 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return listAkun
     }
 
-    fun buatAkun(nama: String, password: String) {
+    fun buatAkun(nama: String, password: String, tanggalPembuatan: String) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put("nama", nama)
             put("password", password)
+            put("tanggal_pembuatan", tanggalPembuatan)
         }
         db.insert("accounts", null, values)
     }
@@ -213,4 +215,23 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
         return false
     }
 
+    fun loadDataAkun(accountId: Int): Bundle? {
+        val db = this.readableDatabase
+
+        val query = "SELECT id, nama, password, tanggal_pembuatan FROM accounts WHERE id = ?"
+        val cursor = db.rawQuery(query, arrayOf(accountId.toString()))
+
+        var bundle: Bundle? = null
+        if (cursor.moveToFirst()) {
+           bundle = Bundle().apply {
+               putInt("id", cursor.getInt(0))
+               putString("namaAkun", cursor.getString(1))
+               putString("password", cursor.getString(2))
+               putString("tanggalPembuatan", cursor.getString(3))
+           }
+        }
+        cursor.close()
+        db.close()
+        return bundle
+    }
 }

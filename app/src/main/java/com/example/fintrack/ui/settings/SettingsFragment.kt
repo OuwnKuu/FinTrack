@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +48,33 @@ class SettingsFragment : Fragment() {
 
          */
 
+        val listener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            when (buttonView.id) {
+                binding.cbGantiNamaAkun.id -> if (isChecked) {
+                    binding.etGantiNamaAkun.visibility = View.VISIBLE
+                    binding.btnGanti.visibility = View.VISIBLE
+                    binding.etGantiNamaAkun.text.clear()
+                } else {
+                    binding.etGantiNamaAkun.visibility = View.INVISIBLE
+                }
+                binding.cbGantiPasswd.id -> if (isChecked) {
+                    binding.etGantiPasswd.visibility = View.VISIBLE
+                    binding.btnGanti.visibility = View.VISIBLE
+                    binding.etGantiPasswd.text.clear()
+                } else {
+                    binding.etGantiPasswd.visibility = View.INVISIBLE
+                }
+                binding.cbGantiNamaAkun.id, binding.cbGantiPasswd.id -> if (isChecked) {
+                    binding.btnGanti.visibility = View.INVISIBLE
+                    binding.etGantiNamaAkun.text.clear()
+                    binding.etGantiPasswd.text.clear()
+                }
+            }
+        }
+
+        binding.cbGantiNamaAkun.setOnCheckedChangeListener(listener)
+        binding.cbGantiPasswd.setOnCheckedChangeListener(listener)
+
         binding.btnLogOut.setOnClickListener {
             (activity as MainActivity).isUserLoggedIn = false
             findNavController().navigate(R.id.navigation_login)
@@ -58,5 +87,36 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dbHelper = DatabaseHelper(requireContext())
+        val accountIdAktif = (activity as MainActivity).currentAccountId
+        val dataAccount = dbHelper.loadDataAkun(accountIdAktif)
+
+        if (dataAccount != null) {
+            val id = dataAccount.getInt("id")
+            val namaAkun = dataAccount.getString("namaAkun") ?: ""
+            val password = dataAccount.getString("password") ?: ""
+            val tanggalPembuatan = dataAccount.getString("tanggalPembuatan")
+
+            val maskPassword = "*".repeat(password.length)
+
+            val listInfoAkun = arrayListOf<String>()
+            listInfoAkun.add("ID Akun: $id")
+            listInfoAkun.add("Nama Akun: $namaAkun")
+            listInfoAkun.add("Password Akun: $maskPassword")
+            listInfoAkun.add("Terdaftar: $tanggalPembuatan")
+
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1,
+                listInfoAkun
+            )
+
+            binding.lvInformasiUmum.adapter = adapter
+        }
     }
 }
