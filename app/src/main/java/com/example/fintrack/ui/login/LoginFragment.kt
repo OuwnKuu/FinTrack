@@ -106,13 +106,13 @@ class LoginFragment : Fragment() {
                     }
                 }
                 binding.btnDaftar.setOnClickListener {
-                    val namaAkun = binding.etVirtualAcc.text.toString()
-                    val passwdAkun = binding.etPassword.text.toString()
+                    val namaAkun = binding.etVirtualAcc.text.toString().trim()
+                    val passwdAkun = binding.etPassword.text.toString().trim()
                     val tanggalSekarang = SimpleDateFormat("dd-MM-yyyy",
                         Locale.getDefault()).format(
                         Date()
                     )
-                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length >= 3) {
+                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length < 3) {
                         dbHelper.buatAkun(namaAkun, passwdAkun, tanggalSekarang)
                         refreshSpinner()
                         Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()
