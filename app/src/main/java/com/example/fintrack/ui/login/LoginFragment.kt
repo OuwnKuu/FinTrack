@@ -14,6 +14,9 @@ import com.example.fintrack.DatabaseHelper
 import com.example.fintrack.MainActivity
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentLoginBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class LoginFragment : Fragment() {
 
@@ -46,7 +49,7 @@ class LoginFragment : Fragment() {
 
          */
 
-        accounts = dbHelper.loadDataAkun()
+        accounts = dbHelper.loadDaftarAkun()
         accounts.add(0, "-- Pilih Akun --")
         accounts.add(1, "Buat Akun Baru")
         adapter = ArrayAdapter(
@@ -58,7 +61,7 @@ class LoginFragment : Fragment() {
 
         binding.spnAkun.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (val selectedAccount = accounts[position]) {
+                when (accounts[position]) {
                     "-- Pilih Akun --" -> {
                         binding.etVirtualAcc.visibility = View.INVISIBLE
                         binding.etPassword.visibility = View.INVISIBLE
@@ -105,8 +108,12 @@ class LoginFragment : Fragment() {
                 binding.btnDaftar.setOnClickListener {
                     val namaAkun = binding.etVirtualAcc.text.toString()
                     val passwdAkun = binding.etPassword.text.toString()
+                    val tanggalSekarang = SimpleDateFormat("dd-MM-yyyy",
+                        Locale.getDefault()).format(
+                        Date()
+                    )
                     if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length >= 3) {
-                        dbHelper.buatAkun(namaAkun, passwdAkun)
+                        dbHelper.buatAkun(namaAkun, passwdAkun, tanggalSekarang)
                         refreshSpinner()
                         Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()
                     } else {
@@ -119,7 +126,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Pilih akun terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
             fun refreshSpinner() {
-                val dataTerbaru = dbHelper.loadDataAkun()
+                val dataTerbaru = dbHelper.loadDaftarAkun()
                 accounts.clear()
                 accounts.add(0, "-- Pilih Akun --")
                 accounts.add(1, "Buat Akun Baru")
