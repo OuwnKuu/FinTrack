@@ -112,7 +112,7 @@ class LoginFragment : Fragment() {
                         Locale.getDefault()).format(
                         Date()
                     )
-                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length < 3) {
+                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length >= 3) {
                         dbHelper.buatAkun(namaAkun, passwdAkun, tanggalSekarang)
                         refreshSpinner()
                         Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()
