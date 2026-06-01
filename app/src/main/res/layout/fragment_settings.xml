@@ -93,7 +93,6 @@
         android:id="@+id/btnHapusAkun"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="64dp"
         android:text="@string/str_btnHapusAkun"
         android:backgroundTint="#E20000"/>
 
@@ -103,7 +102,6 @@
         android:id="@+id/btnLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="64dp"
         android:text="@string/str_btnLogOut"
         android:textAllCaps="false"/>
 
