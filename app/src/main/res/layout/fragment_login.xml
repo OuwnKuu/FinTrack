@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvVersiAplikasi"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/str_tvVersiAplikasi"/>
+
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
