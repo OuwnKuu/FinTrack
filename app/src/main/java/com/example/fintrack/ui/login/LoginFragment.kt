@@ -98,6 +98,7 @@ class LoginFragment : Fragment() {
                         val accountId = dbHelper.getAccountIdByUsername(akunTerpilih)
                         (activity as MainActivity).isUserLoggedIn = true
                         (activity as MainActivity).currentAccountId = accountId
+                        findNavController().popBackStack()
                         findNavController().navigate(R.id.navigation_dashboard)
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()
@@ -112,7 +113,7 @@ class LoginFragment : Fragment() {
                         Locale.getDefault()).format(
                         Date()
                     )
-                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length < 3) {
+                    if (!dbHelper.cekDuplikasiAkun(namaAkun) && namaAkun.isNotBlank() && passwdAkun.length >= 3) {
                         dbHelper.buatAkun(namaAkun, passwdAkun, tanggalSekarang)
                         refreshSpinner()
                         Toast.makeText(requireContext(), "Akun berhasil dibuat", Toast.LENGTH_SHORT).show()

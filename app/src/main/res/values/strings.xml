@@ -23,4 +23,5 @@
     <string name="str_etGantiPasswd">Password Akun Baru</string>
     <string name="str_btnGanti">Ganti</string>
     <string name="str_btnHapusAkun">HAPUS AKUN</string>
+    <string name="str_tvVersiAplikasi">FinTrack v1.0.1</string>
 </resources>

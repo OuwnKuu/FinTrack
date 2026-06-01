@@ -21,6 +21,8 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, "finansial.db
                 "pengeluaran INT," +
                 "saldo INT, " +
                 "FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE)")
+
+        db?.execSQL("CREATE INDEX idx_wallets_account_id ON wallets (account_id)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
