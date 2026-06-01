@@ -98,6 +98,7 @@ class LoginFragment : Fragment() {
                         val accountId = dbHelper.getAccountIdByUsername(akunTerpilih)
                         (activity as MainActivity).isUserLoggedIn = true
                         (activity as MainActivity).currentAccountId = accountId
+                        findNavController().popBackStack()
                         findNavController().navigate(R.id.navigation_dashboard)
                         binding.etVirtualAcc.text.clear()
                         binding.etPassword.text.clear()

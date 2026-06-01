@@ -83,7 +83,7 @@ class SettingsFragment : Fragment() {
         binding.btnLogOut.setOnClickListener {
             (activity as MainActivity).isUserLoggedIn = false
             (activity as MainActivity).currentAccountId = -1
-            findNavController().navigate(R.id.navigation_login)
+            findNavController().popBackStack(R.id.navigation_login, false)
             Toast.makeText(requireContext(), "Berhasil Log Out", Toast.LENGTH_SHORT).show()
         }
 
@@ -98,7 +98,7 @@ class SettingsFragment : Fragment() {
                 (activity as MainActivity).isUserLoggedIn = false
                 (activity as MainActivity).currentAccountId = -1
                 Toast.makeText(requireContext(), "Akun berhasil terhapus", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.navigation_login)
+                findNavController().popBackStack(R.id.navigation_login, false)
             }
 
             builder.setNegativeButton("Batal") { dialog, _ ->
