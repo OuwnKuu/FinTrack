@@ -77,6 +77,9 @@ class DashboardFragment : Fragment() {
         adapterData.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spnOpsiData.adapter = adapterData
 
+        val currentAccountId = (activity as MainActivity).currentAccountId
+        refreshListKeuangan(currentAccountId)
+
         binding.spnOpsiData.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (opsiData[position]) {
@@ -275,16 +278,5 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        dbHelper = DatabaseHelper(requireContext())
-
-        val accountIdAktif = (activity as MainActivity).currentAccountId
-        val dataKeuanganAccount = dbHelper.loadDataKeuangan(accountIdAktif)
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dataKeuanganAccount)
-        binding.lvKeuangan.adapter = adapter
     }
 }
