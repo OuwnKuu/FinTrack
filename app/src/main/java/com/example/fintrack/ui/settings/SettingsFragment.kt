@@ -130,7 +130,7 @@ class SettingsFragment : Fragment() {
             if (isNamaChecked) {
                 val namaBaru = binding.etGantiNamaAkun.text.toString()
 
-                if (dbHelper.cekDuplikasiAkun(namaBaru) && namaBaru.isBlank()) {
+                if (dbHelper.cekDuplikasiAkun(namaBaru) || namaBaru.isBlank()) {
                     binding.etGantiNamaAkun.error = "Nama akun tidak boleh kosong, duplikat, atau hanya spasi"
                     return@setOnClickListener
                 }
